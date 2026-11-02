@@ -224,28 +224,31 @@ if submitted:
         st.error(f"Analysis failed: {exc}")
 
 
-with st.expander("How this detector works"):
-    st.markdown(f"""
-    1. The entered URL is normalized and validated.
-    2. {len(feature_order)} features are extracted
-       {"from the host (domain name) only" if host_only else "from the URL structure"}.
-    3. A trained Random Forest classifier predicts:
-       - `0` = Phishing
-       - `1` = Legitimate
-    4. The model's phishing probability is displayed.
+st.subheader("How this detector works")
 
-    **Why host-only?** In the training dataset, every legitimate URL was a
-    bare homepage, so path-based features taught the model that "has a path
-    means phishing". V4 therefore ignores the path and query.
+st.markdown(f"""
+1. The entered URL is normalized and validated.
 
-    **Limitations:** This URL-only model cannot inspect page content,
-    redirects, certificates, domain reputation, or live threat
-    intelligence. In grouped cross-validation, V4 flagged about 7% of
-    legitimate domains and missed about 35% of phishing domains. Hosts with
-    subdomains are especially unreliable, and phishing pages on trusted
-    domains cannot be detected. It is an educational screening tool, not a
-    replacement for browser protections or security analysis.
-    """)
+2. **{len(feature_order)} features** are extracted from the host (domain name) only.
+
+3. A trained Random Forest classifier predicts:
+   - `0` = Phishing
+   - `1` = Legitimate
+
+4. The model's phishing probability is displayed.
+
+---
+
+**Why host-only?**
+
+In the training dataset, every legitimate URL was a bare homepage, so path-based features taught the model that "has a path" means phishing. V4 therefore ignores the path and query.
+
+**Limitations:**
+
+This URL-only model cannot inspect page content, redirects, certificates, domain reputation, or live threat intelligence. In grouped cross-validation, V4 flagged about 7% of legitimate domains and missed about 35% of phishing domains. Host subdomains are especially unreliable, and phishing pages on trusted domains cannot be detected.
+
+It is an educational screening tool, not a replacement for browser protections or security analysis.
+""")
 
 st.caption(
     f"Educational cybersecurity project • Random Forest {model_version} • "
